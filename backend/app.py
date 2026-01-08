@@ -8,11 +8,13 @@ CORS(app, origins=["http://localhost:3000"])
 
 app.config["SECRET_KEY"] = "super-secret-key"
 
-# Dummy user (for now)
 USER = {
+    "username": "admin",
     "email": "admin@test.com",
     "password": "1234"
 }
+
+
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -26,6 +28,7 @@ def login():
 
     token = jwt.encode(
         {
+            "username": USER["username"],
             "email": USER["email"],
             "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
         },
@@ -33,7 +36,13 @@ def login():
         algorithm="HS256"
     )
 
-    return jsonify({"token": token})
+    return jsonify({
+        "token": token,
+        "user": {
+            "username": USER["username"],
+            "email": USER["email"]
+        }
+    })
 
 
 @app.route("/protected")

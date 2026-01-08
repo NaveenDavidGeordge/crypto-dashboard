@@ -128,7 +128,7 @@ export default function CoinsTable() {
                       : 'text-red-500'
                   }`}
                 >
-                  {coin.price_change_percentage_24h.toFixed(2)}%
+                  {coin.price_change_percentage_24h?.toFixed(2)}%  
                 </td>
 
                 <td className="p-3 text-right">

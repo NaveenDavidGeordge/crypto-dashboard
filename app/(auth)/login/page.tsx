@@ -1,8 +1,7 @@
 'use client'
 
-// import { api } from '@/lib/api'
 import { api } from '@/services/api'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
@@ -15,14 +14,30 @@ export default function LoginPage() {
 
     try {
       const res = await api.post('/login', { email, password })
-      console.log('Login response:', res)
       localStorage.setItem('token', res.data.token)
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+
       router.push('/dashboard')
-    } catch(error) {
-      setError('Invalid login')
+    } catch(error : any) {
+      if (error.response) {
+          if (error.response.status === 401) {
+            setError('Invalid email or password')
+            } else {
+              setError(error.response.data?.message || 'Something went wrong')
+            }
+        } else if (error.request) {
+          setError('Technical issue. Please try again later.')
+        } else {
+          setError('Unexpected error occurred')
+        }
     }
     
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if(token) router.push('/dashboard')
+  })
 
   
 

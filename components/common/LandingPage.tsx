@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useState,  useEffect } from 'react'
-// import { ThemeToggle } from '../theme-provider'
 import { useRouter } from 'next/navigation'
 import { ThemeToggle } from './theme-toggle'
 
@@ -13,6 +12,8 @@ export default function LandingHeader() {
 
   const handleLogout = () => {
     localStorage.removeItem('token') 
+    localStorage.removeItem('user') 
+
     router.push('/login')
   }
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function LandingHeader() {
   
   return (
     <header className="bg-white dark:bg-gray-900 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+      <div className="w-full px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/" className="text-2xl font-bold text-gray-900 dark:text-white">
